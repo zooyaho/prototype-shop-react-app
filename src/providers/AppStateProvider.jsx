@@ -138,7 +138,28 @@ const AppStateProvider = ({children})=>{
   ]);
   const [orders, setOrders] = useState([]);
 
-  const addToOrder = useCallback((id) => {},[]);
+  // [{id, quantity: 1}] 형식의 배열
+  const addToOrder = useCallback((id) => {
+    console.log(id);
+    setOrders(orders => {
+      // 이미 있는 order인지 확인하는 변수
+      const finded = orders.find(order=> order.id === id); 
+
+      if(finded === undefined){
+        // 처음 order에 추가된 상품 등록
+        return [...orders, {id, quantity:1}];
+      } else {
+        // 이미 있는 order에 상품 추가
+        return orders.map(order=> {
+          if(order.id === id) {
+            return { id, quantity: order.quantity + 1}
+          } else {
+            return order;
+          }
+        })
+      }
+    })
+  },[]);
   const remove = useCallback((id) => {},[]);
   const removeAll = useCallback((id) => {},[]);
 
